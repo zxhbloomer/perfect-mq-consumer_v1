@@ -132,37 +132,6 @@
         <artifactId>httpmime</artifactId>
         <version>4.5.5</version>
       </dependency>
-      <!-- 七牛-->
-      <dependency>
-        <groupId>com.qiniu</groupId>
-        <artifactId>qiniu-java-sdk</artifactId>
-        <version>7.2.23</version>
-      </dependency>
-      <!-- mongodb-->
-      <dependency>
-        <groupId>org.mongodb</groupId>
-        <artifactId>mongo-java-driver</artifactId>
-        <version>3.10.2</version>
-      </dependency>
-
-      <!-- 阿里oss-->
-      <dependency>
-        <groupId>com.aliyun.oss</groupId>
-        <artifactId>aliyun-sdk-oss</artifactId>
-        <version>3.5.0</version>
-      </dependency>
-      <!--thymeleaf dialect-->
-      <dependency>
-        <groupId>io.github.jpenren</groupId>
-        <artifactId>thymeleaf-spring-data-dialect</artifactId>
-        <version>3.4.1</version>
-      </dependency>
-      <!--dbcp2-->
-      <dependency>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>commons-dbcp2</artifactId>
-        <version>2.6.0</version>
-      </dependency>
       <!--apache common-->
       <dependency>
         <groupId>org.apache.commons</groupId>
