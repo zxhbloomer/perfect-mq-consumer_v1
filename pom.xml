@@ -197,6 +197,11 @@
         <artifactId>perfect-redis</artifactId>
         <version>${perfect.version}</version>
       </dependency>
+      <dependency>
+        <groupId>com.perfect</groupId>
+        <artifactId>perfect-mq</artifactId>
+        <version>${perfect.version}</version>
+      </dependency>
 
     </dependencies>
   </dependencyManagement>

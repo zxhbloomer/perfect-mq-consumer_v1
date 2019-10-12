@@ -146,6 +146,11 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
+        <!-- perfect 模块 -->
+        <dependency>
+            <groupId>com.perfect</groupId>
+            <artifactId>perfect-mq</artifactId>
+        </dependency>
     </dependencies>
 
   <!--指定使用maven打包-->
