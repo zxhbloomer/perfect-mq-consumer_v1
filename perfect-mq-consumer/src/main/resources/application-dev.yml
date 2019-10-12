@@ -26,6 +26,22 @@ spring:
       port: 35731
     restart:
       enabled: true
+  rabbitmq:
+    addresses: 127.0.0.1:5672
+    username: admin
+    password: admin
+    virtual-host: /
+    ## 消费端配置
+    listener:
+      simple:
+        ## 最大并发数
+        concurrency: 5
+        ## manual:手动 ack（确认）
+        acknowledge-mode: manual
+        ##
+        max-concurrency: 10
+        ## 限流
+        prefetch: 1
   # REDIS设置
   redis:
     # Redis数据库索引（默认为0）
