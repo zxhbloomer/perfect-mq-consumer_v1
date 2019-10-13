@@ -20,6 +20,7 @@ import java.util.Map;
 public class OrderReceiver {
 
     //配置监听的哪一个队列，同时在没有queue和exchange的情况下会去创建并建立绑定关系
+    // @formatter:off
     @RabbitListener(
         bindings = @QueueBinding(
             value = @Queue(value = MQEnum.MqInfo.Log.queueCode, durable = "true"),
