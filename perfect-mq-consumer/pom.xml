@@ -4,17 +4,20 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.perfect-mq</groupId>
+  <groupId>com.perfect</groupId>
   <artifactId>perfect-mq-consumer</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <parent>
-    <artifactId>perfect-mq-consumer-parent</artifactId>
-    <groupId>com.perfect-mq</groupId>
-    <version>1.0-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
+      <groupId>com.perfect</groupId>
+      <artifactId>mq-consumer-parent</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <relativePath>../pom.xml</relativePath>
   </parent>
+
+    <name>mq</name>
+    <description>mq</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
