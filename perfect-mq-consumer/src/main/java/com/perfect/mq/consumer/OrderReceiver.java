@@ -1,5 +1,11 @@
 package com.perfect.mq.consumer;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.perfect.bean.pojo.mqsender.MqSenderPojo;
+import com.perfect.bean.pojo.reflection.CallInfoReflectionPojo;
+import com.perfect.common.utils.string.convert.Convert;
+import com.perfect.framework.utils.reflection.ReflectionUtil;
 import com.perfect.mq.rabbitmq.mqenum.MQEnum;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
@@ -8,8 +14,10 @@ import org.springframework.amqp.support.AmqpHeaders;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
+import org.springframework.amqp.core.Message;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Map;
 
 /**
@@ -30,9 +38,20 @@ public class OrderReceiver {
     )
     //如果有消息过来，在消费的时候调用这个方法
     @RabbitHandler
-    public void onOrderMessage(@Payload Object ob, @Headers Map<String, Object> headers, Channel channel)
+    public void onOrderMessage(@Payload Message messageDataObject, @Headers Map<String, Object> headers, Channel channel)
         throws IOException {
         log.debug("xx");
+        String messageData = Convert.str(messageDataObject.getBody(), (Charset)null);
+        MqSenderPojo mqSenderPojo = JSONObject.parseObject(messageData, MqSenderPojo.class);
+
+
+        /**
+         * 处理回调
+         */
+        if(null != mqSenderPojo.getCallBackInfo()){
+            CallInfoReflectionPojo callback = mqSenderPojo.getCallBackInfo();
+            ReflectionUtil.invokeByObject(callback);
+        }
 
         /**
          * Delivery Tag 用来标识信道中投递的消息。RabbitMQ 推送消息给 Consumer 时，会附带一个 Delivery Tag，
