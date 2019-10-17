@@ -1,23 +1,19 @@
 package com.perfect.mq.consumer.sys.config.tentant;
 
-import com.alibaba.fastjson.JSONObject;
 import com.perfect.bean.pojo.mqsender.MqSenderPojo;
-import com.perfect.common.utils.string.convert.Convert;
-import com.perfect.core.service.sys.config.tentant.ITentantService;
-import com.perfect.framework.utils.reflection.ReflectionUtil;
 import com.perfect.mq.rabbitmq.mqenum.MQEnum;
+import com.perfect.mq.utils.MessageUtil;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.*;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.support.AmqpHeaders;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.Map;
 
 /**
@@ -32,7 +28,6 @@ import java.util.Map;
 @Slf4j
 public class TentantConsumer {
 
-
     /**
      * 配置监听的哪一个队列，同时在没有queue和exchange的情况下会去创建并建立绑定关系
      * @param messageDataObject
@@ -42,22 +37,25 @@ public class TentantConsumer {
      */
     @RabbitListener(
         bindings = @QueueBinding(
-            value = @Queue(value = MQEnum.MqInfo.Tentant.queueCode, durable = "true"),
-            exchange = @Exchange(name=MQEnum.MqInfo.Tentant.exchange, durable = "true", type = "topic"),
-            key = MQEnum.MqInfo.Tentant.routing_key
+            value = @Queue(value = MQEnum.MqInfo.TentantTask.queueCode, durable = "true"),
+            exchange = @Exchange(name=MQEnum.MqInfo.TentantTask.exchange, durable = "true", type = "topic"),
+            key = MQEnum.MqInfo.TentantTask.routing_key
         )
     )
     @RabbitHandler
-    public void onMessage(@Payload Message messageDataObject, @Headers Map<String, Object> headers, Channel channel)
+    public void onMessage(@Payload Message messageDataObject, @Headers Map<String, Object> headers, Channel channel, CorrelationData correlationData)
         throws IOException {
-        String messageData = Convert.str(messageDataObject.getBody(), (Charset)null);
-        MqSenderPojo mqSenderPojo = JSONObject.parseObject(messageData, MqSenderPojo.class);
+        MqSenderPojo mqSenderPojo = MessageUtil.getMessageBodyBean(messageDataObject);
 
-
-        Object messageContext = ReflectionUtil.getClassBean(mqSenderPojo.getMqMessagePojo().getMessageBeanClass(), mqSenderPojo.getMqMessagePojo().getParameterJson());
+        Object messageContext = MessageUtil.getMessageContextBean(messageDataObject);
 
         Long deliveryTag = (Long) headers.get(AmqpHeaders.DELIVERY_TAG);
+        String MESSAGE_ID = (String) headers.get(AmqpHeaders.MESSAGE_ID);
         boolean multiple = false;
         channel.basicAck(deliveryTag, multiple);
+    }
+
+    private void process(Object messageContext){
+
     }
 }
