@@ -1,13 +1,16 @@
 package com.perfect.mq.consumer;
 
 import com.alibaba.fastjson.JSONObject;
+import com.perfect.bean.entity.log.mq.SLogMqEntity;
 import com.perfect.bean.pojo.mqsender.MqSenderPojo;
 import com.perfect.common.utils.string.convert.Convert;
+import com.perfect.core.service.log.mq.ISLogMqService;
 import com.perfect.mq.rabbitmq.mqenum.MQEnum;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.*;
 import org.springframework.amqp.support.AmqpHeaders;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
@@ -23,6 +26,9 @@ import java.util.Map;
 @Component
 @Slf4j
 public class OrderReceiver {
+
+    @Autowired
+    ISLogMqService service;
 
     /**
      * 配置监听的哪一个队列，同时在没有queue和exchange的情况下会去创建并建立绑定关系
@@ -48,6 +54,10 @@ public class OrderReceiver {
         MqSenderPojo mqSenderPojo = JSONObject.parseObject(messageData, MqSenderPojo.class);
 
         /**
+         * 更新处理
+         */
+        mqOkUpdateService(mqSenderPojo.getKey());
+        /**
          * 处理回调
          */
 //        if(null != mqSenderPojo.getCallBackInfo()){
@@ -69,5 +79,25 @@ public class OrderReceiver {
 
         //ACK,确认一条消息已经被消费
         channel.basicAck(deliveryTag, multiple);
+    }
+
+    /**
+     * 根据key获取数据
+     * @param key
+     * @return
+     */
+    private SLogMqEntity getMqData(String key){
+        SLogMqEntity sLogMqEntity = service.selectByKey(key);
+        return sLogMqEntity;
+    }
+
+    /**
+     *
+     * @param key
+     */
+    private void mqOkUpdateService(String key){
+        SLogMqEntity sLogMqEntity = getMqData(key);
+        sLogMqEntity.setConsumer_status(true);
+        service.update(sLogMqEntity);
     }
 }
