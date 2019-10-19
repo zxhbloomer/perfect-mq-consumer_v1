@@ -39,9 +39,9 @@ public class OrderReceiver {
      */
     @RabbitListener(
         bindings = @QueueBinding(
-            value = @Queue(value = MQEnum.MqInfo.Log.queueCode, durable = "true"),
-            exchange = @Exchange(name=MQEnum.MqInfo.Log.exchange, durable = "true", type = "topic"),
-            key = MQEnum.MqInfo.Log.routing_key
+            value = @Queue(value = MQEnum.MqInfo.TentantTask.queueCode, durable = "true"),
+            exchange = @Exchange(name=MQEnum.MqInfo.TentantTask.exchange, durable = "true", type = "topic"),
+            key = MQEnum.MqInfo.TentantTask.routing_key
         )
     )
     /**

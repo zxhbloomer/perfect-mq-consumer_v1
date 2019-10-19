@@ -36,6 +36,12 @@ spring:
     # 开启发送失败退回
     publisher-returns: true
     mandatory: true
+    # 消费者配置
+    custom:
+      consumer:
+        has-open: false
+        default-queue: test_queue
+
     ## 消费端配置
     listener:
       simple:

@@ -1,5 +1,6 @@
 package com.perfect.mq.starter;
 
+import com.perfect.mq.rabbitmq.config.ConsumerConfiguration;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,7 +19,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
             "com.perfect.framework",
             "com.perfect.*",
             "com.perfect.redis",
-            "com.perfect.mq.rabbitmq"
+            "com.perfect.mq.rabbitmq.config"
         })
 @EnableTransactionManagement
 @EntityScan(basePackages = {"com.perfect.*"})
