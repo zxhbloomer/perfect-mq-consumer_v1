@@ -23,8 +23,9 @@ import java.util.Map;
 /**
  *
  */
-@Component
-@Slf4j
+//@Component
+//@Slf4j
+@Deprecated
 public class OrderReceiver {
 
     @Autowired
