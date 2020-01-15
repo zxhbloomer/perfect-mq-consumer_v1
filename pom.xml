@@ -160,6 +160,11 @@
       <!-- prefect 模块 -->
       <dependency>
         <groupId>com.perfect</groupId>
+        <artifactId>perfect-security</artifactId>
+        <version>${perfect.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.perfect</groupId>
         <artifactId>perfect-bean</artifactId>
         <version>${perfect.version}</version>
       </dependency>
