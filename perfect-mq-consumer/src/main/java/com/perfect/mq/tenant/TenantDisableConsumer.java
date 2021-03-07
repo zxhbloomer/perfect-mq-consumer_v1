@@ -2,6 +2,7 @@ package com.perfect.mq.tenant;
 
 import com.perfect.bean.entity.quartz.SJobEntity;
 import com.perfect.bean.pojo.mqsender.MqSenderPojo;
+import com.perfect.common.enums.MqSenderEnum;
 import com.perfect.common.exception.job.TaskException;
 import com.perfect.core.service.quartz.ISJobService;
 import com.perfect.framework.utils.mq.MessageUtil;
@@ -65,13 +66,19 @@ public class TenantDisableConsumer {
         MqSenderPojo mqSenderPojo = MessageUtil.getMessageBodyBean(messageDataObject);
         Object messageContext = MessageUtil.getMessageContextBean(messageDataObject);
 
+        String message_id = (String) headers.get(AmqpHeaders.MESSAGE_ID);
+        log.debug("MESSAGE_ID是【{}】;TenantDisableConsumer.onMessage方法中从【{}】接收到消息：【{}】",
+                message_id,
+                MqSenderEnum.MQ_TENANT_ENABLE.getContent(),
+                messageContext);
+
         /**
          * 执行job
          */
         executeTrigger((SJobEntity)messageContext, mqSenderPojo.getJob_name());
 
         Long deliveryTag = (Long) headers.get(AmqpHeaders.DELIVERY_TAG);
-        String MESSAGE_ID = (String) headers.get(AmqpHeaders.MESSAGE_ID);
+
         boolean multiple = false;
         channel.basicAck(deliveryTag, multiple);
     }
